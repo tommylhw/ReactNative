@@ -15,3 +15,5 @@ const Color = {
   SecondaryDark,
   Dark
 };
+
+export default Color;
