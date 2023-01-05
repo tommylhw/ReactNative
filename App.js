@@ -18,6 +18,7 @@ export default function App() {
         <Drawer.Screen name='Add' component={AddScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
+    
   );
 }
 
