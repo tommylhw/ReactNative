@@ -6,6 +6,8 @@ const AddScreen = () => {
   return ( 
     <View style={styles.frame}>
       <Text>Add Screen</Text>
+
+      <StatusBar style='auto' />
     </View>
    );
 }
