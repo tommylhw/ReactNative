@@ -5,6 +5,7 @@ import { FontAwesome, AntDesign, Fontisto, EvilIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 
 import Color from '../themes/Color.js';
+import NavBtn from '../src/NavBtn.svg'
 
 const CustomDrawerBtn = () => {
 
@@ -13,7 +14,8 @@ const CustomDrawerBtn = () => {
   return ( 
     <TouchableOpacity onPress={() => useNav.toggleDrawer()}>
       {/* <Fontisto name="nav-icon-a" size={24} color={Color.Dark} /> */}
-      <EvilIcons name="navicon" size={35} color={Color.Dark} />
+      <EvilIcons name="navicon" size={35} color={Color.PrimaryDark} />
+      {/* <NavBtn /> */}
     </TouchableOpacity>
    );
 }
@@ -24,6 +26,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+
 });
 
 export default CustomDrawerBtn;
