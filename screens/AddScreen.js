@@ -27,23 +27,34 @@ const AddScreen = () => {
 
         <LinearGradient 
           colors={[Color.PrimaryLight, Color.PrimarySemiDark]} 
-          locations={[0.2, 0.6]}
+          locations={[0.2, 0.7]}
           style={styles.addSection}
           start={[0.55, 0.1]}
-          end={[0.45, 0.9]}
+          end={[0.45, 0.95]}
         >
           <View style={styles.cateSection}>
             <Text style={styles.cateTitle}>Category</Text>
           </View>
 
           <View style={styles.dateTimeSection}>
-            <View>
-              <Text></Text>
+            <View style={styles.dateTimeChild}>
+              <Text style={styles.cateTitle}>Date</Text>
+            </View>
+            
+            <View style={styles.dateTimeChild}>
+              <Text style={styles.cateTitle}>Time</Text>
             </View>
           </View>
 
           <View style={styles.typeSection}>
-            <Text style={styles.cateTitle}>Category</Text>
+            {/* <Text style={styles.cateTitle}>Category</Text> */}
+            <View style={styles.typeChild}>
+              <Text style={styles.cateTitle}>Title</Text>
+            </View>
+
+            <View style={styles.typeChild}>
+              <Text style={styles.cateTitle}>Description</Text>
+            </View>
           </View>
         </LinearGradient>
         
@@ -88,7 +99,7 @@ const styles = StyleSheet.create({
   titleSection: {
     borderWidth: 2,
     width: '100%',
-    height: '15%',
+    height: '10%',
     justifyContent: 'center',
     paddingLeft: 30,
   },
@@ -127,7 +138,14 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     width: '100%',
     height: '18%',
-    marginVertical: 10
+    marginVertical: 10,
+    flexDirection: 'row',
+  },
+
+  dateTimeChild: {
+    borderWidth: 2,
+    borderColor: 'yellow',
+    flex: 1
   },
 
   typeSection: {
@@ -136,7 +154,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '30%',
     marginVertical: 30
-  }
+  },
+
+  typeChild:{
+    flex: 1,
+  },
 
 });
 

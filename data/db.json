@@ -54,5 +54,9 @@
       "cate": "cate06",
       "reminder": false
     }
+  ],
+  "category": [
+    "HKUST",
+    "Work"
   ]
 }

@@ -14,7 +14,7 @@ const CustomDrawerBtn = () => {
   return ( 
     <TouchableOpacity onPress={() => useNav.toggleDrawer()}>
       {/* <Fontisto name="nav-icon-a" size={24} color={Color.Dark} /> */}
-      <EvilIcons name="navicon" size={35} color={Color.PrimaryDark} />
+      <EvilIcons name="navicon" size={35} color={Color.Dark} />
       {/* <NavBtn /> */}
     </TouchableOpacity>
    );
