@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import Color from '../themes/Color';
 
 import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import BackBtn from '../components/BackBtn';
+import InputField from '../components/InputField';
 
 const AddScreen = () => {
   return ( 
@@ -50,11 +51,19 @@ const AddScreen = () => {
             {/* <Text style={styles.cateTitle}>Category</Text> */}
             <View style={styles.typeChild}>
               <Text style={styles.cateTitle}>Title</Text>
+              <InputField placeholder='input the title' />
             </View>
 
             <View style={styles.typeChild}>
               <Text style={styles.cateTitle}>Description</Text>
+              <InputField placeholder='input the description' />
             </View>
+          </View>
+
+          <View style={styles.saveSection}>
+            <TouchableOpacity style={styles.saveBtn}>
+              <Text style={styles.saveBtnText}>Save</Text>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
         
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
   },
 
   mainBody: {
-    borderWidth: 2,
+    // borderWidth: 21,
     flex: 1,
     width: '100%',
     height: '100%',
@@ -97,11 +106,11 @@ const styles = StyleSheet.create({
   },
 
   titleSection: {
-    borderWidth: 2,
+    // borderWidth: 21,
     width: '100%',
-    height: '10%',
+    height: '12%',
     justifyContent: 'center',
-    paddingLeft: 30,
+    paddingLeft: 40,
   },
 
   titleSectionText: {
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
   },
 
   addSection: {
-    borderWidth: 2,
+    // borderWidth: 21,
     borderTopRightRadius: 60,
     borderColor: 'red',
     height: '100%',
@@ -120,10 +129,10 @@ const styles = StyleSheet.create({
   },
 
   cateSection: {
-    borderWidth: 2,
+    // borderWidth: 21,
     borderColor: 'green',
     width: '100%',
-    height: '18%',
+    height: '15%',
     marginVertical: 10
   },
 
@@ -134,22 +143,22 @@ const styles = StyleSheet.create({
   },
 
   dateTimeSection: {
-    borderWidth: 2,
+    // borderWidth: 21,
     borderColor: 'green',
     width: '100%',
-    height: '18%',
+    height: '15%',
     marginVertical: 10,
     flexDirection: 'row',
   },
 
   dateTimeChild: {
-    borderWidth: 2,
+    // borderWidth: 21,
     borderColor: 'yellow',
     flex: 1
   },
 
   typeSection: {
-    borderWidth: 2,
+    // borderWidth: 21,
     borderColor: 'green',
     width: '100%',
     height: '30%',
@@ -158,6 +167,26 @@ const styles = StyleSheet.create({
 
   typeChild:{
     flex: 1,
+  },
+
+  saveSection: {
+    // borderWidth: 21,
+    // height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  saveBtn: {
+    backgroundColor: Color.Secondary,
+    paddingHorizontal: 70,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+
+  saveBtnText: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 
 });
