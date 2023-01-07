@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import CustomDrawerBtn from '../components/CustomDrawerBtn';
+import AddBtn from '../components/AddBtn';
 
 const HomeScreen = () => {
   return ( 
@@ -25,6 +26,8 @@ const HomeScreen = () => {
       {/* </ScrollView> */}
         
       </ScrollView>
+
+      <View style={styles.addBtn}><AddBtn /></View>
 
 
       <StatusBar style='auto' />
@@ -82,6 +85,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 800,
     borderWidth: 2,
+  },
+
+  addBtn: {
+    position: 'absolute',
+    bottom: 30,
   },
 
 });
