@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Picker } from '@react-native-picker/picker';
 
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
 import Color from '../themes/Color';
@@ -10,7 +11,23 @@ import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import BackBtn from '../components/BackBtn';
 import InputField from '../components/InputField';
 
+import Data from '../data/db.json';
+
 const AddScreen = () => {
+
+  const [category, setCategory] = useState([]);
+
+  const getData = () => {
+    fetch(Data).then(response => {
+      console.log(response)
+      return response.json()
+    })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return ( 
     <View style={styles.frame}>
       {/* <Text>Add Screen</Text> */}
@@ -35,6 +52,15 @@ const AddScreen = () => {
         >
           <View style={styles.cateSection}>
             <Text style={styles.cateTitle}>Category</Text>
+            <Picker
+              selectedValue={category}
+              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+              mode='dropdown'
+            >
+              {() => category.map(data => (
+                <Picker.Item label={data} value={data} />
+              ))}
+            </Picker>
           </View>
 
           <View style={styles.dateTimeSection}>
