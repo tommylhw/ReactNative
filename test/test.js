@@ -1,55 +1,70 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import Data from '../data/db.json';
-
 
 const Test = () => {
 
-  const [itemData, setItemData] = useState([]);
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  const [tasks, setTasks] = useState({});
+
+  const getMovies = async () => {
+    try {
+      const response = await fetch('https://reactnative.dev/movies.json');
+      const json = await response.json();
+      setData(json.movies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+ }
+
+ const getTasks = async () => {
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/tommylhw/ReactNative/TodoTracker/data/db.json');
+      const json = await response.json();
+      setTasks(json.tasks);
+      // console.log(json.tasks);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+ }
 
   useEffect(() => {
-    setItemData(
-      {category: [
-        "HKUST",
-        "Work",
-        "Self"
-      ],
-      "tasks": [
-        {
-          "id": 1,
-          "title": "Title01",
-          "details": "details01",
-          "date": "data01",
-          "time": "time01",
-          "cate": "cate01",
-          "reminder": false
-        },
-        {
-          "id": 2,
-          "title": "Title02",
-          "details": "details02",
-          "date": "data02",
-          "time": "time02",
-          "cate": "cate02",
-          "reminder": false
-        }
-      ]}
-    );
+    getMovies();
+    getTasks();
   }, []);
 
-  
+
 
   return ( 
     <View style={styles.frame}>
 
-      {/* <FlatList 
-        data={itemData}
-        renderItem={({item}) => <Text>{item.category}</Text>}
-      /> */}
+    
+    {isLoading ? <Text>Loading...</Text> : (
+      <FlatList
+        data={data}
+        keyExtractor={({ id }, index) => id}
+        renderItem={({ item }) => (
+          <Text>{item.title}, {item.releaseYear}</Text>
+        )}
+      />
+    )}
 
-      <Text>{itemData.category}</Text>
-
-      <Text>{JSON.stringify(itemData.tasks)}</Text>
+    {
+      isLoading ? <Text>Loading...</Text> : (
+        <FlatList 
+          data={tasks}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({item}) => (
+            <Text>{item.title}</Text>
+          )}
+        />
+      )
+    }
       
 
     </View>
