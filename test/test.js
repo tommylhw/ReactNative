@@ -25,7 +25,7 @@ const Test = () => {
       const response = await fetch('https://raw.githubusercontent.com/tommylhw/ReactNative/TodoTracker/data/db.json');
       const json = await response.json();
       setTasks(json.tasks);
-      // console.log(json.tasks);
+      console.log(json.tasks);
     } catch (error) {
       console.error(error);
     } finally {
