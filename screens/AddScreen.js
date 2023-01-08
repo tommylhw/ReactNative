@@ -49,6 +49,9 @@ const AddScreen = () => {
               {/* {() => category.map(data => (
                 <Picker.Item label={data} value={data} />
               ))} */}
+
+              <Picker.Item label='HKUST' value="HKUST" />
+              <Picker.Item label='Work' value="Work" />
             </Picker>
           </View>
 
