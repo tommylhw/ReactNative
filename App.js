@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './screens/HomeScreen';
 import AddScreen from './screens/AddScreen';
+import Test from './test/test';
 
 
 const HomeNav = () => {
@@ -34,6 +35,7 @@ export default function App() {
       <Drawer.Navigator screenOptions={{headerShown: false}} >
         <Drawer.Screen name='Home' component={HomeNav} />
         <Drawer.Screen name='Add' component={AddScreen} />
+        <Drawer.Screen name='test' component={Test} />
       </Drawer.Navigator>
     </NavigationContainer>
     

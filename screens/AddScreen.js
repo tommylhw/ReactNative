@@ -1,8 +1,9 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
 import Color from '../themes/Color';
@@ -11,22 +12,10 @@ import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import BackBtn from '../components/BackBtn';
 import InputField from '../components/InputField';
 
-import Data from '../data/db.json';
 
 const AddScreen = () => {
 
-  const [category, setCategory] = useState([]);
-
-  const getData = () => {
-    fetch(Data).then(response => {
-      console.log(response)
-      return response.json()
-    })
-  }
-
-  useEffect(() => {
-    getData()
-  }, [])
+  const [category, setCategory] = useState();
 
   return ( 
     <View style={styles.frame}>
@@ -57,9 +46,9 @@ const AddScreen = () => {
               onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
               mode='dropdown'
             >
-              {() => category.map(data => (
+              {/* {() => category.map(data => (
                 <Picker.Item label={data} value={data} />
-              ))}
+              ))} */}
             </Picker>
           </View>
 
@@ -87,7 +76,7 @@ const AddScreen = () => {
           </View>
 
           <View style={styles.saveSection}>
-            <TouchableOpacity style={styles.saveBtn}>
+            <TouchableOpacity style={styles.saveBtn} onPress={() => alert('save')}>
               <Text style={styles.saveBtnText}>Save</Text>
             </TouchableOpacity>
           </View>
