@@ -9,14 +9,14 @@ import HomeScreen from './screens/HomeScreen';
 import AddScreen from './screens/AddScreen';
 import Test from './test/test';
 
+import CustomDrawer from './components/CustomDrawer';
+
 
 
 
 const HomeNav = () => {
 
   const Stack = createNativeStackNavigator();
-
-  const [tasks, setTasks] = useState();
 
   return (
 
@@ -34,7 +34,17 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator screenOptions={{headerShown: false}} >
+      <Drawer.Navigator 
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: {
+            backgroundColor: 'transparent',
+            padding: 10,
+          }
+        }} 
+        initialRouteName='Home'
+        drawerContent={(props) => <CustomDrawer {...props} />}
+      >
         <Drawer.Screen name='Home' component={HomeNav} />
         <Drawer.Screen name='Add' component={AddScreen} />
         <Drawer.Screen name='test' component={Test} />

@@ -13,22 +13,6 @@ import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import BackBtn from '../components/BackBtn';
 import InputField from '../components/InputField';
 
-import { initializeApp } from 'firebase/app';
-
-// Initialize Firebase
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyC8ek0UC5JI6HsFvLiB2JowHvIUgoGY7Hk',
-//   authDomain: 'todotracker-708ae.firebaseapp.com',
-//   projectId: 'todotracker-708ae',
-//   storageBucket: 'todotracker-708ae.appspot.com',
-//   messagingSenderId: '811696424289',
-//   appId: "1:811696424289:web:6c597662d856025aafb120",
-//   databaseURL: 'https://todotracker-708ae-default-rtdb.asia-southeast1.firebasedatabase.app/',
-// };
-
-// const app = initializeApp(firebaseConfig);
-const database = getDatabase();
-
 
 const AddScreen = () => {
 
@@ -38,20 +22,18 @@ const AddScreen = () => {
 
   // const db = getDatabase();
 
-  const saveData = (title, details) => {
+  // const saveData = (title, details) => {
     
-    try {
-      set(ref(database, 'tasks/'), {
-        title: title,
-        details: details
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    
+  //   try {
+  //     set(ref(database, 'tasks/001'), {
+  //       title: title,
+  //       details: details
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
 
-    
-  }
+  // }
 
   return ( 
     <View style={styles.frame}>
@@ -127,7 +109,7 @@ const AddScreen = () => {
               setDetails(details);
               console.log(title, details);
 
-              saveData(title, details);
+              // saveData(title, details);
             }}>
               <Text style={styles.saveBtnText}>Save</Text>
             </TouchableOpacity>
