@@ -16,7 +16,7 @@ const firebaseConfig = {
   storageBucket: 'todotracker-708ae.appspot.com',
   messagingSenderId: '811696424289',
   appId: "1:811696424289:web:6c597662d856025aafb120",
-  databaseURL: 'https://todotracker-708ae.firebaseio.com',
+  databaseURL: 'https://todotracker-708ae-default-rtdb.asia-southeast1.firebasedatabase.app/',
 };
 
 const app = initializeApp(firebaseConfig);
