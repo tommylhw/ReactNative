@@ -37,10 +37,10 @@ export default function App() {
       <Drawer.Navigator 
         screenOptions={{
           headerShown: false,
-          drawerStyle: {
-            backgroundColor: 'transparent',
-            padding: 10,
-          }
+          // drawerStyle: {
+          //   backgroundColor: 'transparent',
+          //   padding: 10,
+          // }
         }} 
         initialRouteName='Home'
         drawerContent={(props) => <CustomDrawer {...props} />}
