@@ -77,17 +77,14 @@ const AddScreen = () => {
     onValue(catePathRef, (snapshot) => {
       const data = snapshot.val();
       setCateList(data);
-      // console.log(cateList);
+      console.log(cateList);
     })
   }
 
   useEffect(() => {
     initCategory();
+    getCurrentTime();
   }, []);
-
-  for (let i = 0; i < cateList.length; i++) {
-    console.log(i);
-  }
 
   
 
@@ -119,13 +116,14 @@ const AddScreen = () => {
               selectedValue={category}
               onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
               mode='dropdown'
-            >
-              {/* {() => category.map(data => (
-                <Picker.Item label={data} value={data} />
-              ))} */}
-
-              {/* <Picker.Item label='HKUST' value="HKUST" />
-              <Picker.Item label='Work' value="Work" /> */}
+            > 
+              {
+                cateList.map((item, index) => {
+                  return (
+                    <Picker.Item label={item} value={index} key={index} />
+                  )
+                })
+              }
 
               
             </Picker>
