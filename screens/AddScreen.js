@@ -6,6 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, set, onValue  } from 'firebase/database';  
 
+
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
 import Color from '../themes/Color';
 
@@ -35,15 +36,32 @@ const AddScreen = () => {
   const [title, setTitle] = useState();
   const [details, setDetails] = useState();
   const [category, setCategory] = useState();
+  const [cateList, setCateList] = useState([]);
 
   const [id, SetId] = useState();
 
-  // const db = getDatabase();
+  const [currentTime, setCurrentTime] = useState('');
 
+  const getCurrentTime = () => {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    setCurrentTime(
+      date + '-' + month + '-' + year + '_' + hours + ':' + min + ':' + sec
+    );
+  }
+    
+  // backend
   const saveData = (title, details) => {
+
+    getCurrentTime()
+    console.log(currentTime);
     
     try {
-      set(ref(database, 'tasks/001'), {
+      set(ref(database, 'tasks/' + currentTime), {
         title: title,
         details: details
       });
@@ -52,6 +70,26 @@ const AddScreen = () => {
     }
 
   }
+
+  // Initize the category list
+  const initCategory = () => {
+    const catePathRef = ref(database, 'category');
+    onValue(catePathRef, (snapshot) => {
+      const data = snapshot.val();
+      setCateList(data);
+      // console.log(cateList);
+    })
+  }
+
+  useEffect(() => {
+    initCategory();
+  }, []);
+
+  for (let i = 0; i < cateList.length; i++) {
+    console.log(i);
+  }
+
+  
 
   return ( 
     <View style={styles.frame}>
@@ -86,8 +124,10 @@ const AddScreen = () => {
                 <Picker.Item label={data} value={data} />
               ))} */}
 
-              <Picker.Item label='HKUST' value="HKUST" />
-              <Picker.Item label='Work' value="Work" />
+              {/* <Picker.Item label='HKUST' value="HKUST" />
+              <Picker.Item label='Work' value="Work" /> */}
+
+              
             </Picker>
           </View>
 
@@ -125,6 +165,7 @@ const AddScreen = () => {
             <TouchableOpacity style={styles.saveBtn} onPress={() => {
               setTitle(title);
               setDetails(details);
+              // getCurrentTime();
               console.log(title, details);
 
               saveData(title, details);
