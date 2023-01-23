@@ -5,6 +5,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, set, onValue  } from 'firebase/database';  
+// import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+// import uuid from 'react-native-uuid';
 
 
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
@@ -14,9 +17,8 @@ import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import BackBtn from '../components/BackBtn';
 import InputField from '../components/InputField';
 
-import { initializeApp } from 'firebase/app';
-
 // Initialize Firebase
+import { initializeApp } from 'firebase/app';
 const firebaseConfig = {
   apiKey: 'AIzaSyC8ek0UC5JI6HsFvLiB2JowHvIUgoGY7Hk',
   authDomain: 'todotracker-708ae.firebaseapp.com',
@@ -26,10 +28,12 @@ const firebaseConfig = {
   appId: "1:811696424289:web:6c597662d856025aafb120",
   databaseURL: 'https://todotracker-708ae-default-rtdb.asia-southeast1.firebasedatabase.app/',
 };
-
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const v4Uuid = '109156be-c4fb-41ea-b1b4-efe1671c5836';
+
+// console.log(uuidv4(v4Uuid));
 
 const AddScreen = () => {
 
@@ -37,8 +41,6 @@ const AddScreen = () => {
   const [details, setDetails] = useState();
   const [category, setCategory] = useState();
   const [cateList, setCateList] = useState([]);
-
-  const [id, SetId] = useState();
 
   const [currentTime, setCurrentTime] = useState('');
 
@@ -58,7 +60,7 @@ const AddScreen = () => {
   const saveData = (title, details) => {
 
     getCurrentTime()
-    console.log(currentTime);
+    // console.log(currentTime);
     
     try {
       set(ref(database, 'tasks/' + currentTime), {
