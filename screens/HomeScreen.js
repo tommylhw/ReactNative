@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import AddBtn from '../components/AddBtn';
+import Tasks from '../components/Tasks';
 
 const HomeScreen = () => {
   return ( 
@@ -15,15 +16,17 @@ const HomeScreen = () => {
 
       {/* body */}
       <ScrollView style={styles.mainBody}>
-      {/* <ScrollView> */}
+
         <View style={styles.cateSelectorContainer}></View>
 
         <View style={styles.dashboardContainer}></View>
 
         <View style={styles.dateSelectorContainer}></View>
 
-        <View style={styles.tasksContainer}></View>
-      {/* </ScrollView> */}
+        <View style={styles.tasksContainer}>
+          <Tasks />
+        </View>
+
         
       </ScrollView>
 
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
 
   tasksContainer: {
     width: '100%',
-    height: 800,
+    // height: 800,
     borderWidth: 2,
   },
 
