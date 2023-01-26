@@ -7,7 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 import { getDatabase, ref, set, onValue  } from 'firebase/database';  
 // import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-// import uuid from 'react-native-uuid';
+import uuid from 'react-native-uuid';
+import 'react-native-get-random-values';
 
 
 import { FontAwesome, AntDesign, Fontisto, EvilIcons, Ionicons } from '@expo/vector-icons';
@@ -31,11 +32,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const v4Uuid = '109156be-c4fb-41ea-b1b4-efe1671c5836';
-
-// console.log(uuidv4(v4Uuid));
-
 const AddScreen = () => {
+
+  // console.log(uuid.v4());
+  const [id, setId] = useState();
 
   const [title, setTitle] = useState();
   const [details, setDetails] = useState();
@@ -57,13 +57,13 @@ const AddScreen = () => {
   }
     
   // backend
-  const saveData = (title, details) => {
+  const saveData = (id, title, details) => {
 
-    getCurrentTime()
-    // console.log(currentTime);
+    getCurrentTime();
     
     try {
       set(ref(database, 'tasks/' + currentTime), {
+        _id: id,
         title: title,
         details: details
       });
@@ -163,12 +163,13 @@ const AddScreen = () => {
 
           <View style={styles.saveSection}>
             <TouchableOpacity style={styles.saveBtn} onPress={() => {
+              setId(uuid.v4());
               setTitle(title);
               setDetails(details);
               // getCurrentTime();
-              console.log(title, details);
+              console.log(id, title, details);
 
-              saveData(title, details);
+              saveData(id, title, details);
             }}>
               <Text style={styles.saveBtnText}>Save</Text>
             </TouchableOpacity>
