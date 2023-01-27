@@ -89,7 +89,6 @@ const AddScreen = () => {
   }, []);
 
   
-
   return ( 
     <View style={styles.frame}>
       {/* <Text>Add Screen</Text> */}
