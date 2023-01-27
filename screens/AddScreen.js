@@ -84,9 +84,10 @@ const AddScreen = () => {
   }
 
   useEffect(() => {
-    initCategory();
-    getCurrentTime();
-  }, []);
+    console.log(id);
+    return initCategory();
+    
+  }, [id]);
 
   
   return ( 
