@@ -3,8 +3,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+import Constants from 'expo-constants';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getDatabase, ref, set, onValue  } from 'firebase/database';  
+import { getDatabase, ref, set, onValue, push  } from 'firebase/database';  
 // import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import uuid from 'react-native-uuid';
@@ -32,17 +33,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+// Initize the category list
+const initCategory = () => {
+  const catePathRef = ref(database, 'category');
+  var data
+  onValue(catePathRef, (snapshot) => {
+    data = snapshot.val();
+    // setCateList(data);
+  });
+
+  return data;
+}
+initCategory();
+
 const AddScreen = () => {
-
-  // console.log(uuid.v4());
-  const [id, setId] = useState();
-
-  const [title, setTitle] = useState();
-  const [details, setDetails] = useState();
-  const [category, setCategory] = useState();
-  const [cateList, setCateList] = useState([]);
-
-  const [currentTime, setCurrentTime] = useState('');
 
   const getCurrentTime = () => {
     var date = new Date().getDate(); //Current Date
@@ -51,43 +55,75 @@ const AddScreen = () => {
     var hours = new Date().getHours(); //Current Hours
     var min = new Date().getMinutes(); //Current Minutes
     var sec = new Date().getSeconds(); //Current Seconds
-    setCurrentTime(
-      date + '-' + month + '-' + year + '_' + hours + ':' + min + ':' + sec
-    );
-  }
-    
-  // backend
-  const saveData = (id, title, details) => {
 
-    getCurrentTime();
-    
-    try {
-      set(ref(database, 'tasks/' + currentTime), {
-        _id: id,
-        title: title,
-        details: details
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    var time = date + '-' + month + '-' + year + '_' + hours + '_' + min + '_' + sec;
 
+    return time;
   }
 
   // Initize the category list
-  const initCategory = () => {
+  /* const initCategory = () => {
     const catePathRef = ref(database, 'category');
     onValue(catePathRef, (snapshot) => {
-      const data = snapshot.val();
+      var data = snapshot.val();
       setCateList(data);
-      console.log(cateList);
-    })
+    });
+
+  } */
+
+  
+
+  const [cateList, setCateList] = useState(initCategory());
+
+  const [id, setId] = useState(uuid.v4());
+  const [addTime, setAddTime] = useState(getCurrentTime());
+
+  const [title, setTitle] = useState();
+  const [details, setDetails] = useState();
+  const [category, setCategory] = useState();
+
+  // backend
+  const saveData = (newID, newTime) => {
+
+    // setId(uuid.v4());
+    // setAddTime(getCurrentTime());
+    
+    console.log({
+      _id: newID,
+      add_time: newTime,
+      title: title,
+      details: details
+    });
+
+    set(ref(database, 'tasks/' + newTime), {
+      _id: newID,
+      add_time: newTime,
+      title: title,
+      details: details
+    });
+
+  }
+
+  
+
+  const onScreenLoad = () => {
+    console.log('init: ', id, addTime);
+    // initCategory();
+    console.log(cateList);
   }
 
   useEffect(() => {
-    console.log(id);
-    return initCategory();
+
+    const catePathRef = ref(database, 'category');
+    onValue(catePathRef, (snapshot) => {
+      var data = snapshot.val();
+      setCateList(data);
+    });
+
+    onScreenLoad();
+
     
-  }, [id]);
+  }, []);
 
   
   return ( 
@@ -163,13 +199,19 @@ const AddScreen = () => {
 
           <View style={styles.saveSection}>
             <TouchableOpacity style={styles.saveBtn} onPress={() => {
-              setId(uuid.v4());
-              setTitle(title);
-              setDetails(details);
-              // getCurrentTime();
-              console.log(id, title, details);
+              // let genId = uuid.v4();
+              // console.log(genId);
 
-              saveData(id, title, details);
+              // setId(genId);
+              // setTitle(title);
+              // setDetails(details);
+
+              // getCurrentTime();
+
+              var newId = uuid.v4();
+              var newTime = getCurrentTime();
+
+              saveData(newId, newTime);
             }}>
               <Text style={styles.saveBtnText}>Save</Text>
             </TouchableOpacity>
@@ -189,7 +231,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
   },
 

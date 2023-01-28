@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import Constants from 'expo-constants';
 
 import CustomDrawerBtn from '../components/CustomDrawerBtn';
 import AddBtn from '../components/AddBtn';
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
   },
 
