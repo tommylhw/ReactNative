@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { getDatabase, ref, set, onValue  } from 'firebase/database';  
+import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';  
 
 // Initialize Firebase
 import { initializeApp } from 'firebase/app';
@@ -17,10 +17,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const getData = () => {
+  var data;
+  onValue(ref(database, 'tasks'), (snapshot) => {
+    data = snapshot.val();
+    console.log('number of tasks: ' + Object.keys(data).length);
+  });
+
+  return data;
+
+}
+
 const Tasks = () => {
+
+  const [tasksData, setTasksData] = useState(getData());
+
+  /* const getData = () => {
+
+    onValue(ref(database, 'tasks'), (snapshot) => {
+      setTasksData(snapshot.val());
+      console.log(tasksData);
+      console.log('number of tasks: ' + Object.keys(tasksData).length);
+    })
+
+  } */
+
   return ( 
     <View style={styles.container}>
       <Text>Number of Tasks</Text>
+
+      <TouchableOpacity onPress={() => getData()}>
+        <Text>Button</Text>
+      </TouchableOpacity>
+
+      <Text>
+        {tasksData.toString()}
+      </Text>
 
     </View>
    );
