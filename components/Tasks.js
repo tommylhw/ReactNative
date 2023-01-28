@@ -50,10 +50,6 @@ const Tasks = () => {
         <Text>Button</Text>
       </TouchableOpacity>
 
-      <Text>
-        {tasksData.toString()}
-      </Text>
-
     </View>
    );
 }
