@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // import Realm from "realm";
 
@@ -25,8 +26,9 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.addBtn}>
-          {/* <Ionicons name="add" size={24} color="#fff" /> */}
-          <Ionicons name='add' size={24} color='#fff' />
+          {/* <Text>Btn</Text> */}
+          {/* <Ionicons name='add' size={24} color='#fff' /> */}
+          <AntDesign name='plus' size={24} color='#fff' />
         </TouchableOpacity>
       </View>
 
