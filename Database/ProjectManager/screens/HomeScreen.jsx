@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Realm from "realm";
+// import Realm from "realm";
 
 
 import CustomColors from '../themes/CustomColors';
