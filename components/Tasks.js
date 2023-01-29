@@ -1,5 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';  
 
@@ -19,36 +20,52 @@ const database = getDatabase(app);
 
 const getData = () => {
   var data;
+  var arrayData;
+
   onValue(ref(database, 'tasks'), (snapshot) => {
     data = snapshot.val();
     console.log('number of tasks: ' + Object.keys(data).length);
-  });
 
-  return data;
+    arrayData = Object.entries(data);
+    console.log(arrayData);
+    console.log(typeof(arrayData));
+  });
+  // console.log(data);
+
+  return arrayData;
 
 }
 
 const Tasks = () => {
 
-  const [tasksData, setTasksData] = useState(getData());
+  const [tasksData, setTasksData] = useState(() => getData());
 
-  /* const getData = () => {
-
-    onValue(ref(database, 'tasks'), (snapshot) => {
-      setTasksData(snapshot.val());
-      console.log(tasksData);
-      console.log('number of tasks: ' + Object.keys(tasksData).length);
-    })
-
-  } */
+  // run on screen load
+  const isFocused = useIsFocused();
+  
+  useEffect(() => {
+    setTasksData(getData());
+    // console.log(tasksData);
+    
+  }, [isFocused]);
 
   return ( 
     <View style={styles.container}>
-      <Text>Number of Tasks</Text>
+      <Text>Number of Tasks:</Text>
 
       <TouchableOpacity onPress={() => getData()}>
         <Text>Button</Text>
       </TouchableOpacity>
+
+      
+
+      {Array.isArray(tasksData) ? 
+        tasksData.map((task) => (
+          <Text>ffff</Text>
+        )) : <Text>Not an array: {typeof(tasksData)}</Text>
+      }
+
+      
 
     </View>
    );
