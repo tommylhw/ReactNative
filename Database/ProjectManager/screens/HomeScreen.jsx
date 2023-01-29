@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// import Realm from "realm";
+import Realm from "realm";
 
 
 import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
-import ProjectScreen from './ProjectScreen';
 
 const HomeScreen = ({ navigation }) => {
   return (
@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
 
         <TouchableOpacity style={styles.addBtn}>
           {/* <Ionicons name="add" size={24} color="#fff" /> */}
-          <Text>Btn</Text>
+          <Ionicons name='add' size={24} color='#fff' />
         </TouchableOpacity>
       </View>
 
