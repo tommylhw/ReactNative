@@ -25,17 +25,35 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-function App() {
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import CustomColors from './themes/CustomColors';
+import HomeScreen from './screens/HomeScreen';
+import ProjectScreen from './screens/ProjectScreen';
+
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
+  /* const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }; */
+
+  const Stack = createNativeStackNavigator();
 
   return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-    </View>
+    <NavigationContainer>
+
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+        }}
+      >
+        <Stack.Screen name='Home' component={HomeScreen} />
+        <Stack.Screen name='Project' component={ProjectScreen} />
+      </Stack.Navigator>
+
+    </NavigationContainer>
   );
 }
 
@@ -44,7 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
   },
 
 });

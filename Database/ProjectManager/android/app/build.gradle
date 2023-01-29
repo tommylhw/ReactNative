@@ -111,6 +111,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+            storeFile file('ProjectManager')
+            storePassword 'T@mmy03128'
+            keyAlias 'ProjectManager'
+            keyPassword 'T@mmy03128'
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
