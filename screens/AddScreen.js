@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import Constants from 'expo-constants';
@@ -44,7 +45,6 @@ const initCategory = () => {
 
   return data;
 }
-initCategory();
 
 const AddScreen = () => {
 
@@ -61,15 +61,13 @@ const AddScreen = () => {
     return time;
   }
 
-  // Initize the category list
-  /* const initCategory = () => {
-    const catePathRef = ref(database, 'category');
-    onValue(catePathRef, (snapshot) => {
-      var data = snapshot.val();
-      setCateList(data);
-    });
-
-  } */
+  // run on screen load
+  const isFocused = useIsFocused();
+  
+  useEffect(() => {
+    initCategory();
+    
+  }, [isFocused]);
 
   
 
@@ -95,8 +93,18 @@ const AddScreen = () => {
       details: details
     });
 
-    set(ref(database, 'tasks/' + newTime), {
+    /* set(ref(database, 'tasks/' + newTime), {
       _id: newID,
+      add_time: newTime,
+      title: title,
+      details: details
+    }); */
+
+    const tasksListRef = ref(database, 'tasks');
+    const newTaskRef = push(tasksListRef);
+
+    set(newTaskRef, {
+      _id: newTaskRef.key,
       add_time: newTime,
       title: title,
       details: details
