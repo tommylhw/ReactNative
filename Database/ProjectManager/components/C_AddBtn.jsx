@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const C_AddBtn = (props) => {
   return ( 
-    <TouchableOpacity style={styles.addBtn}>
+    <TouchableOpacity style={styles.addBtn} onPress={props.onPress}>
       {/* <Text>Btn</Text> */}
       {/* <Ionicons name='add' size={24} color='#fff' /> */}
       <AntDesign name='plus' size={24} color='#fff' />
