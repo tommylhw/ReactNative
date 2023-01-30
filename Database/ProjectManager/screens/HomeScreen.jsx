@@ -1,16 +1,20 @@
+import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-// import Realm from "realm";
-
+import Realm from "realm";
 
 import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
+import C_AddBtn from '../components/C_AddBtn';
 
 const HomeScreen = ({ navigation }) => {
+
+
+
   return (
     <ScrollView style={styles.container}>
       {/* <Text>HomeScreen</Text> */}
@@ -21,19 +25,19 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.addGroupContainer}>
         <View style={styles.inputContainer}>
-          <C_InputField placeholder='Search Project' />
-          <C_InputField placeholder='Search Project' />
+          <C_InputField placeholder='Searchf a project' />
+          <C_InputField placeholder='Enter a new task' />
         </View>
 
-        <TouchableOpacity style={styles.addBtn}>
-          {/* <Text>Btn</Text> */}
-          {/* <Ionicons name='add' size={24} color='#fff' /> */}
+        {/* <TouchableOpacity style={styles.addBtn}>
           <AntDesign name='plus' size={24} color='#fff' />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <C_AddBtn />
       </View>
 
       <View style={styles.dataContainer}>
-
+        
       </View>
       
     </ScrollView>
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
 
-  addBtn: {
+  /* addBtn: {
     backgroundColor: CustomColors.Primary,
     height: 50,
     width: 50,
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }, */
 
   dataContainer: {
     borderWidth: 2,
