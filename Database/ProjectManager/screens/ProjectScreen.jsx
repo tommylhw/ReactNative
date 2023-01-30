@@ -1,10 +1,13 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView , FlatList} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { db, getFirestore, collection, addDoc } from '../firebase/firebaseIndex';
+// import { db, getFirestore, collection, addDoc } from '../firebase/firebaseIndex';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
+
 // import Realm from "realm";
-import { TaskListSchema, TaskSchema, updateTaskList, deleteTaskList, queryAllTaskList } from '../data/DataSchema';
+// import { TaskListSchema, TaskSchema, updateTaskList, deleteTaskList, queryAllTaskList } from '../data/DataSchema';
 // import realm from '../data/DataSchema';
 // import realm from "realm";
 
@@ -12,6 +15,22 @@ import { TaskListSchema, TaskSchema, updateTaskList, deleteTaskList, queryAllTas
 import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
 import C_AddBtn from '../components/C_AddBtn';
+import C_ProjectItem from '../components/C_ProjectItem';
+
+
+const firebaseConfig = {
+  databaseURL: 'https://projectmanagerapp-5d2c9.firebaseio.com',
+  apiKey: "AIzaSyCM-yux0gBHhaETQkJjEm8BfGOonuLC4po",
+  authDomain: "projectmanagerapp-5d2c9.firebaseapp.com",
+  projectId: "projectmanagerapp-5d2c9",
+  storageBucket: "projectmanagerapp-5d2c9.appspot.com",
+  messagingSenderId: "944568779294",
+  appId: "1:944568779294:web:7d545629e5c9f00f16640f",
+  measurementId: "G-Z8DK8M17GF"
+};
+
+firebase.initializeApp(firebaseConfig);
+// var database = firebase.firestore();
 
 
 
@@ -92,11 +111,14 @@ const ProjectScreen = () => {
   
   
   const [projectName, setProjectName] = useState();
+  const [projectDone, setProjectDone] = useState();
+
+  const [projectList, setProjectList] = useState();
 
   const addProject = async () => {
     console.log(projectName);
 
-    try {
+    /* try {
       const docRef = await addDoc(collection(db, "projects"), {
         name: projectName,
         last: "Lovelace",
@@ -105,8 +127,36 @@ const ProjectScreen = () => {
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
-    }
+    } */
+
+    firestore().collection('projects').add({
+      projectName: projectName,
+      projectDone: false,
+      numberOfTask: 3,
+    }).then(() => {
+      console.log('data added');
+    });
+    
   }
+
+  useEffect(() => {
+    const getData = firestore().collection('projects').onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach(documentSnapshot => {
+      data.push({
+        ...documentSnapshot.data(),
+        key: documentSnapshot.id,
+      });
+     });
+
+     setProjectList(data);
+    });
+
+    console.log(projectList);
+
+    return () => getData();
+    
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -118,8 +168,13 @@ const ProjectScreen = () => {
         <C_AddBtn onPress={() => addProject()} />
       </View>
 
-      <View style={styles.projectContainer}>
-
+      <View style={styles.projectListContainer}>
+        <FlatList 
+          data={projectList}
+          renderItem={({item}) => (
+            <C_ProjectItem projectName={item.projectName} projectDone={item.projectDone.toString()} numberOfTasks={item.numberOfTask} />
+          )}
+        />
       </View>
       
     </ScrollView>
@@ -146,7 +201,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 
-  projectContainer: {
+  projectListContainer: {
     borderWidth: 2,
     height: 1200,
   }

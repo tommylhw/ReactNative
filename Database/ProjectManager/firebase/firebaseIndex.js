@@ -1,9 +1,10 @@
-// Import the functions you need from the SDKs you need
-import * as firebase from 'firebase';
+/* // Import the functions you need from the SDKs you need
+import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, addDoc, connectFirestoreEmulator  } from "firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,14 +23,15 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore()
+// firebase.initializeApp(firebaseConfig);
+// const db = getFirestore();
 
+// firebase.initializeApp(firebaseConfig);
 // firebase.firestore().settings({ experimentalForceLongPolling: true });
-// connectFirestoreEmulator(db, "10.0.2.2", 8080);
+connectFirestoreEmulator(db, "10.0.2.2", 8080);
 // const analytics = getAnalytics(app);
 
-export { db, getFirestore, collection, addDoc };
+export { db, getFirestore, collection, addDoc }; */
