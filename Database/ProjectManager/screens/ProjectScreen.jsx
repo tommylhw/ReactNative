@@ -44,9 +44,9 @@ const ProjectScreen = () => {
     }).catch((error) => console.warn(error));
     console.log('Data loaded');
     console.log(dataSet);
-  } */
+  }
 
-  /* useEffect(() => {
+  useEffect(() => {
     const getRealmInstance = async () => {
       try {
         Realm = await Realm.open({
@@ -61,9 +61,9 @@ const ProjectScreen = () => {
     // var data = Realm.objects('TaskList');
     // setDataSet([...data]);
     getRealmInstance();
-  }, []); */
+  }, []);
 
-  /* const DogSchema = {
+  const DogSchema = {
     name: "Dog",
     properties: {
      _id: "objectId",
@@ -109,7 +109,7 @@ const ProjectScreen = () => {
     example()
   }, []); */
   
-  
+
   const [projectName, setProjectName] = useState();
   const [projectDone, setProjectDone] = useState();
 
