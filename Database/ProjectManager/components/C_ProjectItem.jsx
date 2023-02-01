@@ -6,25 +6,18 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const C_ProjectItem = (props) => {
 
-  const [selectedId, setSelectedId] = useState();
-
   return ( 
     <View style={styles.container}>
-      <TouchableOpacity style={styles.projectCompleteBox}>
-        <Entypo name='circle' size={15} color='#fff' style={{fontWeight: 'bold'}} />
+      <TouchableOpacity style={styles.projectCompleteBox} onPress={() => props.updateProjectStatus()}>
+        <Entypo name='circle' size={15} color={props.project.projectDone ? '#4bf478' : '#fff'} style={{fontWeight: 'bold'}} />
       </TouchableOpacity>
 
       <View style={styles.projectDetails}>
-        <Text style={styles.projectNameText}>{props.index} {props.projectName}</Text>
+        <Text style={styles.projectNameText}>{props.project.projectName}</Text>
         <Text>{props.numberOfTasks} tasks to do</Text>
       </View>
 
-      <TouchableOpacity style={styles.projectDelectIcon} onPress={() => {
-        // setSelectedId(props.index);
-        
-        props.deleteProject(props.index);
-        
-      }}>
+      <TouchableOpacity style={styles.projectDelectIcon} onPress={() => props.deleteProject()}>
         <Feather name='trash-2' size={24} color={CustomColors.Primary} />
       </TouchableOpacity>
 

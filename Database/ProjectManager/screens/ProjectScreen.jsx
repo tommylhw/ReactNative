@@ -115,13 +115,30 @@ const ProjectScreen = () => {
   }, []); */
   
 
-  const [projectName, setProjectName] = useState();
+  const [projectName, setProjectName] = useState('');
   const [projectDone, setProjectDone] = useState();
 
   const [projectList, setProjectList] = useState();
 
   const addData = async () => {
-    console.log(projectName);
+
+    // check if the project already exists
+    const nameList = [];
+    projectList.forEach((data) => {
+      nameList.push(data.projectName.toString());
+    })
+    console.log(nameList);
+
+    if (nameList.includes(projectName)) {
+      alert('This project exist already');
+      return;
+    }
+
+    // Check if user input is empty
+    if (!projectName.trim()) {
+      alert('Please enter the project name.');
+      return;
+    }
 
     firestore().collection('projects').add({
       projectName: projectName,
@@ -130,14 +147,18 @@ const ProjectScreen = () => {
       created: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(() => {
       // console.log(firebase.firestore.FieldValue.serverTimestamp());
-      console.log(projectName, ' data added');
+      console.log(projectName, 'data added');
+      getAllData();
     }).catch((err) => {
       console.warn(err);
     });
+
+    // clear the inputfield
+    setProjectName('');
     
   }
 
-  const getAllData = () => {
+  const getAllData = async () => {
     // Normal get data
     /* firestore().collection('projects').onSnapshot((querySnapshot) => {
       const data = [];
@@ -151,7 +172,7 @@ const ProjectScreen = () => {
     }); */
 
     // get data with ordering
-    firestore().collection("projects").orderBy("projectName", "asc").get().then(querySnapshot => {
+    await firestore().collection("projects").orderBy("created", "desc").get().then(querySnapshot => {
       const data = [];
       querySnapshot.forEach(documentSnapShot => {
         data.push({
@@ -167,7 +188,6 @@ const ProjectScreen = () => {
   }
 
   const delProject = async (id) => {
-    console.log(id, projectList[id], ' selected');
 
     await firestore().collection("projects").doc(projectList[id].id).delete().then(() => {
       console.log('deleted');
@@ -178,19 +198,19 @@ const ProjectScreen = () => {
     });
   }
 
-  useEffect(() => {
-    /* const getData = firestore().collection('projects').onSnapshot((querySnapshot) => {
-      const data = [];
-      querySnapshot.forEach(documentSnapshot => {
-      data.push({
-        ...documentSnapshot.data(),
-        id: documentSnapshot.id,
-      });
-     });
-     setProjectList(data);
-    }); */
+  const updateProject = (id) => {
+    getAllData();
+    firestore().collection("projects").doc(projectList[id].id).update({
+      'projectDone': !projectList[id].projectDone,
+    }).then(() => {
+      console.log(projectList[id].id, 'updated');
+    }).catch((err) => {
+      console.log(err);
+    })
+    
+  }
 
-    // console.log(projectList);
+  useEffect(() => {
 
     getAllData();
     
@@ -200,7 +220,7 @@ const ProjectScreen = () => {
     <ScrollView horizontal={false} style={styles.container}>
       <View style={styles.inputContainer}>
         <View style={styles.inputFieldContainer}>
-          <C_InputField placeholder='Enter a new project' onChangeText={(text) => setProjectName(text)} />
+          <C_InputField placeholder='Enter a new project' onChangeText={(text) => setProjectName(text)} value={projectName} />
         </View>
 
         <C_AddBtn onPress={() => addData()} />
@@ -210,7 +230,7 @@ const ProjectScreen = () => {
         <FlatList 
           data={projectList}
           renderItem={({item, index}) => (
-            <C_ProjectItem projectName={item.projectName} projectDone={item.projectDone.toString()} numberOfTasks={item.numberOfTask} index={index} deleteProject={() => delProject(index)} />
+            <C_ProjectItem project={item} numberOfTasks={item.numberOfTask} index={index} deleteProject={() => delProject(index)} updateProjectStatus={() => updateProject(index)} />
           )}
         />
       </View>

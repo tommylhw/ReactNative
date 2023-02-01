@@ -80,16 +80,6 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
   },
 
-  /* addBtn: {
-    backgroundColor: CustomColors.Primary,
-    height: 50,
-    width: 50,
-    margin: 5,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, */
-
   dataContainer: {
     // borderWidth: 2,
     marginVertical: 30,

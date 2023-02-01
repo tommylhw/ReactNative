@@ -7,6 +7,7 @@ const C_InputField = (props) => {
       style={styles.inputField}
       placeholder={props.placeholder}
       onChangeText={props.onChangeText}
+      value={props.value}
     />
    );
 }
