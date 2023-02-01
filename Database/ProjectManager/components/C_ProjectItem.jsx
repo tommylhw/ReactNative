@@ -1,10 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import CustomColors from '../themes/CustomColors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 
 const C_ProjectItem = (props) => {
+
+  const [selectedId, setSelectedId] = useState();
+
   return ( 
     <View style={styles.container}>
       <TouchableOpacity style={styles.projectCompleteBox}>
@@ -12,11 +15,16 @@ const C_ProjectItem = (props) => {
       </TouchableOpacity>
 
       <View style={styles.projectDetails}>
-        <Text style={styles.projectNameText}>{props.projectName}</Text>
+        <Text style={styles.projectNameText}>{props.index} {props.projectName}</Text>
         <Text>{props.numberOfTasks} tasks to do</Text>
       </View>
 
-      <TouchableOpacity style={styles.projectDelectIcon}>
+      <TouchableOpacity style={styles.projectDelectIcon} onPress={() => {
+        // setSelectedId(props.index);
+        
+        props.deleteProject(props.index);
+        
+      }}>
         <Feather name='trash-2' size={24} color={CustomColors.Primary} />
       </TouchableOpacity>
 
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
   },
 
   projectDetails: {
-    borderWidth: 2,
+    // borderWidth: 2,
     justifyContent: 'center',
     padding: 10,
     flexGrow: 1,
@@ -53,9 +61,11 @@ const styles = StyleSheet.create({
 
   projectDelectIcon: {
     width: 60,
-    borderWidth: 2,
+    // borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
   },
 
   projectNameText: {

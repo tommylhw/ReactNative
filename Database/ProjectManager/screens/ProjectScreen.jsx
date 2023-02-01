@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, ScrollView , FlatList} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { db, getFirestore, collection, addDoc } from '../firebase/firebaseIndex';
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
@@ -29,7 +31,10 @@ const firebaseConfig = {
   measurementId: "G-Z8DK8M17GF"
 };
 
-firebase.initializeApp(firebaseConfig);
+// const db = getFirestore(initializeApp(firebaseConfig));
+
+// firebase.initializeApp(firebaseConfig);
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 // var database = firebase.firestore();
 
 
@@ -115,64 +120,97 @@ const ProjectScreen = () => {
 
   const [projectList, setProjectList] = useState();
 
-  const addProject = async () => {
+  const addData = async () => {
     console.log(projectName);
-
-    /* try {
-      const docRef = await addDoc(collection(db, "projects"), {
-        name: projectName,
-        last: "Lovelace",
-        born: 1815
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    } */
 
     firestore().collection('projects').add({
       projectName: projectName,
       projectDone: false,
       numberOfTask: 3,
+      created: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(() => {
-      console.log('data added');
+      // console.log(firebase.firestore.FieldValue.serverTimestamp());
+      console.log(projectName, ' data added');
+    }).catch((err) => {
+      console.warn(err);
     });
     
   }
 
-  useEffect(() => {
-    const getData = firestore().collection('projects').onSnapshot((querySnapshot) => {
+  const getAllData = () => {
+    // Normal get data
+    /* firestore().collection('projects').onSnapshot((querySnapshot) => {
       const data = [];
       querySnapshot.forEach(documentSnapshot => {
       data.push({
         ...documentSnapshot.data(),
-        key: documentSnapshot.id,
+        id: documentSnapshot.id,
       });
      });
-
      setProjectList(data);
+    }); */
+
+    // get data with ordering
+    firestore().collection("projects").orderBy("projectName", "asc").get().then(querySnapshot => {
+      const data = [];
+      querySnapshot.forEach(documentSnapShot => {
+        data.push({
+          ...documentSnapShot.data(),
+          id: documentSnapShot.id,
+        });
+      });
+      setProjectList(data);
     });
+    
 
     console.log(projectList);
+  }
 
-    return () => getData();
+  const delProject = async (id) => {
+    console.log(id, projectList[id], ' selected');
+
+    await firestore().collection("projects").doc(projectList[id].id).delete().then(() => {
+      console.log('deleted');
+      getAllData();
+      
+    }).catch((err) => {
+      console.warn(err);
+    });
+  }
+
+  useEffect(() => {
+    /* const getData = firestore().collection('projects').onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach(documentSnapshot => {
+      data.push({
+        ...documentSnapshot.data(),
+        id: documentSnapshot.id,
+      });
+     });
+     setProjectList(data);
+    }); */
+
+    // console.log(projectList);
+
+    getAllData();
     
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView horizontal={false} style={styles.container}>
       <View style={styles.inputContainer}>
         <View style={styles.inputFieldContainer}>
           <C_InputField placeholder='Enter a new project' onChangeText={(text) => setProjectName(text)} />
         </View>
 
-        <C_AddBtn onPress={() => addProject()} />
+        <C_AddBtn onPress={() => addData()} />
       </View>
 
       <View style={styles.projectListContainer}>
         <FlatList 
           data={projectList}
-          renderItem={({item}) => (
-            <C_ProjectItem projectName={item.projectName} projectDone={item.projectDone.toString()} numberOfTasks={item.numberOfTask} />
+          renderItem={({item, index}) => (
+            <C_ProjectItem projectName={item.projectName} projectDone={item.projectDone.toString()} numberOfTasks={item.numberOfTask} index={index} deleteProject={() => delProject(index)} />
           )}
         />
       </View>
@@ -183,7 +221,9 @@ const ProjectScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    width: '100%',
+    height: '100%',
     backgroundColor: CustomColors.BG,
     // alignItems: 'center',
     paddingHorizontal: '10%'
@@ -192,7 +232,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
     marginVertical: 30,
-    borderWidth: 2,
+    // borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -202,9 +242,10 @@ const styles = StyleSheet.create({
   },
 
   projectListContainer: {
-    borderWidth: 2,
-    height: 1200,
-  }
+    // borderWidth: 2,
+    // height: 1200,
+    marginBottom: 30,
+  },
 
 });
 

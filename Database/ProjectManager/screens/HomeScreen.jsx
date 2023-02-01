@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 
   addGroupContainer: {
     width: '100%',
-    borderWidth: 2,
+    // borderWidth: 2,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     width: '80%',
-    borderWidth: 2,
+    // borderWidth: 2,
   },
 
   /* addBtn: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   }, */
 
   dataContainer: {
-    borderWidth: 2,
+    // borderWidth: 2,
     marginVertical: 30,
     width: '100%',
     height: 1200,
