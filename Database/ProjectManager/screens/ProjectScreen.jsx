@@ -209,7 +209,7 @@ const ProjectScreen = (props) => {
 
     //  getAllData();
 
-    HomeScreen.getAllData();
+    // HomeScreen.getAllData();
 
     // console.log(dataList);
     setProjectList(dataList);
