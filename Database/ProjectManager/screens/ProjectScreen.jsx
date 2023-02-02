@@ -19,6 +19,9 @@ import C_InputField from '../components/C_InputField';
 import C_AddBtn from '../components/C_AddBtn';
 import C_ProjectItem from '../components/C_ProjectItem';
 
+import HomeScreen from '../screens/HomeScreen';
+
+import { getAllData } from '../screens/HomeScreen';
 
 const firebaseConfig = {
   databaseURL: 'https://projectmanagerapp-5d2c9.firebaseio.com',
@@ -39,7 +42,7 @@ const firebaseConfig = {
 
 
 
-const ProjectScreen = () => {
+const ProjectScreen = (props) => {
 
   // const [dataSet, setDataSet] = useState([]);
 
@@ -116,9 +119,10 @@ const ProjectScreen = () => {
   
 
   const [projectName, setProjectName] = useState('');
-  const [projectDone, setProjectDone] = useState();
 
   const [projectList, setProjectList] = useState();
+
+  const { dataList } = props.route.params;
 
   const addData = async () => {
 
@@ -148,7 +152,8 @@ const ProjectScreen = () => {
     }).then(() => {
       // console.log(firebase.firestore.FieldValue.serverTimestamp());
       console.log(projectName, 'data added');
-      getAllData();
+      // getAllData();
+      setProjectList(props.route.params);
     }).catch((err) => {
       console.warn(err);
     });
@@ -158,18 +163,7 @@ const ProjectScreen = () => {
     
   }
 
-  const getAllData = async () => {
-    // Normal get data
-    /* firestore().collection('projects').onSnapshot((querySnapshot) => {
-      const data = [];
-      querySnapshot.forEach(documentSnapshot => {
-      data.push({
-        ...documentSnapshot.data(),
-        id: documentSnapshot.id,
-      });
-     });
-     setProjectList(data);
-    }); */
+  /* const getAllData = async () => {
 
     // get data with ordering
     await firestore().collection("projects").orderBy("created", "desc").get().then(querySnapshot => {
@@ -185,7 +179,7 @@ const ProjectScreen = () => {
     
 
     console.log(projectList);
-  }
+  } */
 
   const delProject = async (id) => {
 
@@ -199,7 +193,8 @@ const ProjectScreen = () => {
   }
 
   const updateProject = (id) => {
-    getAllData();
+    // getAllData();
+    setProjectList(dataList);
     firestore().collection("projects").doc(projectList[id].id).update({
       'projectDone': !projectList[id].projectDone,
     }).then(() => {
@@ -212,7 +207,12 @@ const ProjectScreen = () => {
 
   useEffect(() => {
 
-    getAllData();
+    //  getAllData();
+
+    HomeScreen.getAllData();
+
+    // console.log(dataList);
+    setProjectList(dataList);
     
   }, []);
 

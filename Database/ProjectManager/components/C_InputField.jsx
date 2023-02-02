@@ -15,6 +15,7 @@ const C_InputField = (props) => {
 const styles = StyleSheet.create({
   inputField: {
     // width: '100%',
+    flexGrow: 1,
     height: 50,
     paddingHorizontal: 10,
     marginVertical: 5,
