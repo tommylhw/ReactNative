@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -8,6 +8,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 import Realm from "realm";
 
@@ -31,7 +32,44 @@ const firebaseConfig = {
 
 const HomeScreen = ({ navigation }) => {
 
-  const [dataList, setDataList] = useState();
+  const [dataList, setDataList] = useState([]);
+
+  const [selectList, setSelectList] = useState([]);
+  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedProjectId, setSelectedProjectId] = useState('');
+
+  const [taskName, setTaskName] = useState('');
+
+  const storeSelectedProject = () => {
+    getAllData();
+
+    var selectedId;
+
+    firestore().collection('projects').where('projectName', '==', selectedProject).get().then(querySnapshot => {
+      querySnapshot.forEach(documentSnapShot => {
+        selectedId = documentSnapShot.id
+      });
+      setSelectedProjectId(selectedId);
+    });
+
+  }
+
+  // add task
+  const addTask = () =>{
+
+    console.log('Adding', selectedProjectId);
+
+    firestore().collection("projects").doc(selectedProjectId).update({
+      'tasks': [... taskName],
+    }).then(() => {
+      console.log(selectedProjectId, 'updated');
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    setTaskName('');
+
+  }
 
   const getAllData = async () => {
 
@@ -45,6 +83,10 @@ const HomeScreen = ({ navigation }) => {
         });
       });
       setDataList(data);
+
+      const nameList = data.map((item) => item.projectName);
+      setSelectList(nameList);
+      
     }).catch((err) => console.warn(err));
     
 
@@ -57,28 +99,38 @@ const HomeScreen = ({ navigation }) => {
     
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllData();
+    }, [])
+  );
+
   return (
     <ScrollView style={styles.container}>
       {/* <Text>HomeScreen</Text> */}
 
-      <TouchableOpacity style={styles.projectBtn} onPress={() => navigation.navigate('Project', {
-        dataList
-      })}>
+      <TouchableOpacity style={styles.projectBtn} onPress={() => navigation.navigate('Project')}>
         <Text style={styles.projectBtnText}>See All Projects</Text>
       </TouchableOpacity>
 
       <View style={styles.addGroupContainer}>
 
-        <C_InputField placeholder='Searchf a project' />
+        {/* <C_InputField placeholder='Search a project' /> */}
+        <SelectList 
+          setSelected={(val) => setSelectedProject(val)} 
+          data={selectList}
+          save="value"
+          search={false}
+          onSelect={() => storeSelectedProject()}
+          boxStyles={{backgroundColor: '#fff'}}
+          dropdownStyles={{backgroundColor: '#fff'}}
+        />
 
         <View style={styles.addTaskContainer}>
-          <C_InputField placeholder='Enter a new task' />
-          <C_AddBtn />
+          <C_InputField placeholder='Enter a new task' onChangeText={(text) => setTaskName(text)} value={taskName} />
+          <C_AddBtn onPress={() => addTask()} />
         </View>
 
-        {/* <TouchableOpacity style={styles.addBtn}>
-          <AntDesign name='plus' size={24} color='#fff' />
-        </TouchableOpacity> */}
       </View>
 
       <View style={styles.dataContainer}>

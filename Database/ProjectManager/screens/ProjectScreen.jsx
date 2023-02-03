@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView , FlatList} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { db, getFirestore, collection, addDoc } from '../firebase/firebaseIndex';
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -18,10 +18,6 @@ import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
 import C_AddBtn from '../components/C_AddBtn';
 import C_ProjectItem from '../components/C_ProjectItem';
-
-import HomeScreen from '../screens/HomeScreen';
-
-import { getAllData } from '../screens/HomeScreen';
 
 const firebaseConfig = {
   databaseURL: 'https://projectmanagerapp-5d2c9.firebaseio.com',
@@ -122,21 +118,23 @@ const ProjectScreen = (props) => {
 
   const [projectList, setProjectList] = useState();
 
-  const { dataList } = props.route.params;
+  // const { dataList } = props.route.params;
 
   const addData = async () => {
 
     // check if the project already exists
-    const nameList = [];
-    projectList.forEach((data) => {
+    /* const nameList = [];
+     projectList.forEach((data) => {
       nameList.push(data.projectName.toString());
     })
-    console.log(nameList);
+    console.log(nameList); */
 
+    const nameList = projectList.map(item => item.projectName);
     if (nameList.includes(projectName)) {
       alert('This project exist already');
       return;
     }
+    console.log(nameList);
 
     // Check if user input is empty
     if (!projectName.trim()) {
@@ -149,11 +147,12 @@ const ProjectScreen = (props) => {
       projectDone: false,
       numberOfTask: 3,
       created: firebase.firestore.FieldValue.serverTimestamp(),
+      tasks: [],
     }).then(() => {
       // console.log(firebase.firestore.FieldValue.serverTimestamp());
       console.log(projectName, 'data added');
-      // getAllData();
-      setProjectList(props.route.params);
+      getAllData();
+      // setProjectList(props.route.params);
     }).catch((err) => {
       console.warn(err);
     });
@@ -163,10 +162,10 @@ const ProjectScreen = (props) => {
     
   }
 
-  /* const getAllData = async () => {
+  const getAllData = () => {
 
     // get data with ordering
-    await firestore().collection("projects").orderBy("created", "desc").get().then(querySnapshot => {
+    firestore().collection("projects").orderBy("created", "desc").get().then(querySnapshot => {
       const data = [];
       querySnapshot.forEach(documentSnapShot => {
         data.push({
@@ -179,7 +178,7 @@ const ProjectScreen = (props) => {
     
 
     console.log(projectList);
-  } */
+  }
 
   const delProject = async (id) => {
 
@@ -193,8 +192,8 @@ const ProjectScreen = (props) => {
   }
 
   const updateProject = (id) => {
-    // getAllData();
-    setProjectList(dataList);
+    getAllData();
+    // setProjectList(dataList);
     firestore().collection("projects").doc(projectList[id].id).update({
       'projectDone': !projectList[id].projectDone,
     }).then(() => {
@@ -207,14 +206,18 @@ const ProjectScreen = (props) => {
 
   useEffect(() => {
 
-    //  getAllData();
-
-    // HomeScreen.getAllData();
+     getAllData();
 
     // console.log(dataList);
-    setProjectList(dataList);
+    // setProjectList(dataList);
     
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllData();
+    }, [])
+  );
 
   return (
     <ScrollView horizontal={false} style={styles.container}>
