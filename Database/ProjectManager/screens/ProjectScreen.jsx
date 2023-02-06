@@ -8,12 +8,6 @@ import { initializeApp } from "firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
-// import Realm from "realm";
-// import { TaskListSchema, TaskSchema, updateTaskList, deleteTaskList, queryAllTaskList } from '../data/DataSchema';
-// import realm from '../data/DataSchema';
-// import realm from "realm";
-
-
 import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
 import C_AddBtn from '../components/C_AddBtn';
@@ -38,81 +32,7 @@ const firebaseConfig = {
 
 
 
-const ProjectScreen = (props) => {
-
-  // const [dataSet, setDataSet] = useState([]);
-
-  /* const loadData = () => {
-    queryAllTaskList().then((data) => {
-      setDataSet({data});
-    }).catch((error) => console.warn(error));
-    console.log('Data loaded');
-    console.log(dataSet);
-  }
-
-  useEffect(() => {
-    const getRealmInstance = async () => {
-      try {
-        Realm = await Realm.open({
-          path: 'ProjectManagerApp',
-          schema: [TaskListSchema, TaskSchema],
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // var data = Realm.objects('TaskList');
-    // setDataSet([...data]);
-    getRealmInstance();
-  }, []);
-
-  const DogSchema = {
-    name: "Dog",
-    properties: {
-     _id: "objectId",
-     name: "string",
-     age: "int",
-     breed: "string?"
-    },
-    primaryKey: "_id",
-  };
-  
-  async function example() {
-    const app = new Realm.App({ id: "application-0-rpjlr" });
-  
-   // MongoDB Realm offers built-in Auth to secure Syncing data
-   const credentials = Realm.Credentials.anonymous();
-   await app.logIn(credentials);
-  
-   // Data can be Synced with a simple configuration
-   const config = {
-    schema: [DogSchema],
-      sync: {
-       user: app.currentUser,
-       partitionValue: "MyPartitionValue"
-      },
-    };
-  
-    const realm = await Realm.open(config);
-  
-   // Realm Writes are transactional and Sync automatically
-   realm.write(() => {
-     realm.create("Dog", {
-       _id: new ObjectId(),
-        name: "Princess Gracie",
-        age: 6,
-     });
-   });
-   // Data Synced onto a device can be queried locally
-   const allDogs = realm.objects("Dog");
-   const olderDogs = alLDogs.filtered("age > 5");
-  }
-
-  useEffect(() => {
-    example()
-  }, []); */
-  
+const ProjectScreen = (props) => {  
 
   const [projectName, setProjectName] = useState('');
 
@@ -193,7 +113,9 @@ const ProjectScreen = (props) => {
 
   const updateProject = (id) => {
     getAllData();
-    // setProjectList(dataList);
+    
+    console.log('=====', 'updateProject()', '=====');
+
     firestore().collection("projects").doc(projectList[id].id).update({
       'projectDone': !projectList[id].projectDone,
     }).then(() => {
@@ -207,9 +129,6 @@ const ProjectScreen = (props) => {
   useEffect(() => {
 
      getAllData();
-
-    // console.log(dataList);
-    // setProjectList(dataList);
     
   }, []);
 

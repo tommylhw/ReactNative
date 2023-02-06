@@ -4,13 +4,11 @@ import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, FieldPath, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import { SelectList } from 'react-native-dropdown-select-list';
-
-import Realm from "realm";
 
 import CustomColors from '../themes/CustomColors';
 import C_InputField from '../components/C_InputField';
@@ -37,30 +35,54 @@ const HomeScreen = ({ navigation }) => {
   const [selectList, setSelectList] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState('');
+  const [selectedProjectTaskList, setSelectedProjectTaskList] = useState([]);
 
   const [taskName, setTaskName] = useState('');
 
-  const storeSelectedProject = () => {
+  const getSelectedProject = () => {
     getAllData();
 
-    var selectedId;
+    var data = []; 
 
     firestore().collection('projects').where('projectName', '==', selectedProject).get().then(querySnapshot => {
       querySnapshot.forEach(documentSnapShot => {
-        selectedId = documentSnapShot.id
+        // selectedId = documentSnapShot.id;
+        data.push({
+          ...documentSnapShot.data(),
+          id: documentSnapShot.id,
+        })
       });
-      setSelectedProjectId(selectedId);
+      // console.warn(data[0].tasks);
+      setSelectedProjectId(data[0].id);
+      setSelectedProjectTaskList(data[0].tasks);
     });
 
   }
 
   // add task
   const addTask = () =>{
+    console.log('=====', 'addTask()', '=====');
+    console.log('Updating', selectedProjectId);
+    console.log('Current TaskList', selectedProjectTaskList);
 
-    console.log('Adding', selectedProjectId);
+    if (!selectedProjectId.trim()) {
+      alert('Please select a project');
+      return;
+    }
+
+    if (!taskName.trim()) {
+      alert('Please enter the task');
+      return;
+    }
+
+    var targetTaskList = selectedProjectTaskList;
+    targetTaskList.push(taskName);
+
+    console.log(targetTaskList);
+    // console.warn(newTaskList);
 
     firestore().collection("projects").doc(selectedProjectId).update({
-      'tasks': [... taskName],
+      'tasks': targetTaskList,
     }).then(() => {
       console.log(selectedProjectId, 'updated');
     }).catch((err) => {
@@ -90,7 +112,7 @@ const HomeScreen = ({ navigation }) => {
     }).catch((err) => console.warn(err));
     
 
-    console.log(dataList);
+    console.log('Data:', dataList);
   }
 
   useEffect(() => {
@@ -121,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
           data={selectList}
           save="value"
           search={false}
-          onSelect={() => storeSelectedProject()}
+          onSelect={() => getSelectedProject()}
           boxStyles={{backgroundColor: '#fff'}}
           dropdownStyles={{backgroundColor: '#fff'}}
         />
@@ -129,6 +151,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.addTaskContainer}>
           <C_InputField placeholder='Enter a new task' onChangeText={(text) => setTaskName(text)} value={taskName} />
           <C_AddBtn onPress={() => addTask()} />
+          {/* <C_AddBtn /> */}
         </View>
 
       </View>
