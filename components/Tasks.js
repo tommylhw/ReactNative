@@ -61,7 +61,8 @@ const Tasks = () => {
 
       {Array.isArray(tasksData) ? 
         tasksData.map((task) => (
-          <Text>ffff</Text>
+          // <Text>ffff</Text>
+          <Text>{task.title}</Text>
         )) : <Text>Not an array: {typeof(tasksData)}</Text>
       }
 
