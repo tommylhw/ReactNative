@@ -116,7 +116,7 @@ const AddScreen = () => {
 
   const onScreenLoad = () => {
     console.log('init: ', id, addTime);
-    // initCategory();
+    initCategory();
     console.log(cateList);
   }
 
