@@ -34,7 +34,7 @@ const getData = () => {
 
   return arrayData;
 
-}
+} 
 
 const Tasks = () => {
 
